@@ -25,3 +25,7 @@ func GetVehicleByID(db *gorm.DB, id uint64) (*Vehicle, error) {
 	}
 	return &vehicle, nil
 }
+
+func (Vehicle) TableName() string {
+	return "vehicle_tab"
+}

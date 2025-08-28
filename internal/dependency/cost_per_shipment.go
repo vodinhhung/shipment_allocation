@@ -32,3 +32,7 @@ func GetCostPerShipmentByZoneAndVehicle(db *gorm.DB, zoneID, vehicleID uint64) (
 	err := db.Where("zone_id = ? AND vehicle_id = ?", zoneID, vehicleID).First(&cost).Error
 	return &cost, err
 }
+
+func (CostPerShipment) TableName() string {
+	return "cost_per_shipment_tab"
+}

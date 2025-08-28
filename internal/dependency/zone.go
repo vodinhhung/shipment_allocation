@@ -24,3 +24,7 @@ func GetZoneByID(db *gorm.DB, id uint64) (*Zone, error) {
 	}
 	return &zone, nil
 }
+
+func (Zone) TableName() string {
+	return "zone_tab"
+}

@@ -8,9 +8,12 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"shipment_allocation/internal/api"
+	"shipment_allocation/internal/dependency"
+	"time"
+
 	"shipment_allocation/cmd/router"
 	"shipment_allocation/internal/common"
-	"time"
 )
 
 func main() {
@@ -22,10 +25,19 @@ func main() {
 	writeTimeout := common.ParseDurationOrDefault(common.GetEnv("WRITE_TIMEOUT", "10s"), 10*time.Second)
 	idleTimeout := common.ParseDurationOrDefault(common.GetEnv("IDLE_TIMEOUT", "120s"), 120*time.Second)
 
+	db, err := dependency.InitDb()
+	if err != nil {
+		log.Fatalf("db error: %v", err)
+	}
+
+	allocation := api.NewAllocation(db)
+	rout := router.NewRouter(allocation)
+
 	mux := http.NewServeMux()
 	// endpoints
-	mux.HandleFunc("/", router.HandleRoot)
-	mux.HandleFunc("/health", router.HandleHealth)
+	mux.HandleFunc("/", rout.HandleRoot)
+	mux.HandleFunc("/health", rout.HandleHealth)
+	mux.HandleFunc("/allocate", rout.HandleAllocateShipment)
 	//mux.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
 	//	switch r.Method {
 	//	case http.MethodGet:
