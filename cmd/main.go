@@ -34,38 +34,11 @@ func main() {
 	rout := router.NewRouter(allocation)
 
 	mux := http.NewServeMux()
-	// endpoints
 	mux.HandleFunc("/", rout.HandleRoot)
 	mux.HandleFunc("/health", rout.HandleHealth)
 	mux.HandleFunc("/allocate", rout.HandleAllocateShipment)
-	//mux.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
-	//	switch r.Method {
-	//	case http.MethodGet:
-	//		api.handleListUsers(w, r)
-	//	case http.MethodPost:
-	//		api.handleCreateUser(w, r)
-	//	default:
-	//		w.Header().Set("Allow", "GET,POST")
-	//		writeError(w, http.StatusMethodNotAllowed, "method not allowed")
-	//	}
-	//})
-	//
-	//// specific user endpoints: /users/{id} -> naive parsing
-	//mux.HandleFunc("/users/", func(w http.ResponseWriter, r *http.Request) {
-	//	switch r.Method {
-	//	case http.MethodGet:
-	//		api.handleGetUser(w, r)
-	//	case http.MethodDelete:
-	//		api.handleDeleteUser(w, r)
-	//	default:
-	//		w.Header().Set("Allow", "GET,DELETE")
-	//		writeError(w, http.StatusMethodNotAllowed, "method not allowed")
-	//	}
-	//})
 
-	// chain middlewares: CORS -> Logging -> handler
 	handler := simpleCORSMiddleware(loggingMiddleware(mux))
-
 	srv := &http.Server{
 		Addr:         addr,
 		Handler:      handler,

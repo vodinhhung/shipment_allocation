@@ -1,9 +1,12 @@
 package router
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"shipment_allocation/internal/api"
 	"shipment_allocation/internal/common"
+	"shipment_allocation/internal/model"
 	"time"
 )
 
@@ -20,7 +23,18 @@ func (router *Router) HandleHealth(w http.ResponseWriter, r *http.Request) {
 }
 
 func (router *Router) HandleAllocateShipment(w http.ResponseWriter, r *http.Request) {
-	err := router.allocation.ShipmentAllocation()
+	var data *model.RequestData
+	fmt.Println(r.Body)
+
+	// Decode JSON body into struct
+	err := json.NewDecoder(r.Body).Decode(data)
+	if err != nil {
+		common.WriteError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	fmt.Println(&data)
+
+	err = router.allocation.ShipmentAllocation(data)
 	if err != nil {
 		common.WriteError(w, http.StatusInternalServerError, err.Error())
 		return

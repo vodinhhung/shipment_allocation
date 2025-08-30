@@ -25,6 +25,15 @@ func GetZoneByID(db *gorm.DB, id uint64) (*Zone, error) {
 	return &zone, nil
 }
 
+// GetZonesByIDs retrieves zones matching the given list of IDs.
+func GetZonesByIDs(db *gorm.DB, ids []uint64) ([]Zone, error) {
+	var zones []Zone
+	if err := db.Where("id IN ?", ids).Find(&zones).Error; err != nil {
+		return nil, err
+	}
+	return zones, nil
+}
+
 func (Zone) TableName() string {
 	return "zone_tab"
 }
