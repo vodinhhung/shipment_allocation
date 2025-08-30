@@ -20,7 +20,6 @@ type Response struct {
 	Status      string                       `json:"status"` // "success" | "failed"
 	Assignments map[string]map[string]uint64 `json:"assignments,omitempty"`
 	TotalCost   uint64                       `json:"total_cost,omitempty"`
-	Violations  []string                     `json:"violations,omitempty"`
 }
 
 type CostPerShipment struct {
