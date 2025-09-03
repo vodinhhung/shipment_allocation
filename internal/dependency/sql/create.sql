@@ -1,8 +1,3 @@
-CREATE TABLE zone_tab (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    no_shipments INT
-);
-
 CREATE TABLE vehicle_tab (
     id INT AUTO_INCREMENT PRIMARY KEY,
     vehicle_id VARCHAR(255),

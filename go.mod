@@ -3,7 +3,6 @@ module shipment_allocation
 go 1.23.4
 
 require (
-	github.com/draffensperger/golp v0.0.0-20250721104811-2d405f0b4e68
 	github.com/stretchr/testify v1.9.0
 	gorm.io/driver/mysql v1.6.0
 	gorm.io/gorm v1.30.1
